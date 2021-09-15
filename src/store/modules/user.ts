@@ -1,6 +1,7 @@
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken, getIdKey, setIdKey, removeIdKey } from '@/utils/auth'
 
+// 初始化state变量
 const getDefaultState = () => {
   return {
     id: getIdKey(),
@@ -36,12 +37,12 @@ const mutations = {
 
 
 const actions = {
+  // 登录功能
   login({ commit }:any, userInfo:any) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        console.log(data)
         if (response.success) {
           commit('SET_TOKEN', data.token)
           commit('SET_ID', data.id)
@@ -54,6 +55,7 @@ const actions = {
       })
     })
   },
+  // 获取用户信息
   getInfo({ commit, state }:any) {
     return new Promise((resolve, reject) => {
       getInfo(state.id).then(response => {
@@ -78,6 +80,7 @@ const actions = {
       })
     })
   },
+  // 用户退出
   logout({ commit }:any) {
     return new Promise((resolve, reject) => {
       removeToken() // must remove  token  first
@@ -85,6 +88,7 @@ const actions = {
       commit('RESET_STATE')
     })
   },
+  // token重置
   resetToken({ commit }:any) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
