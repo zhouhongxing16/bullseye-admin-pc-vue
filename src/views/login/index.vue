@@ -63,6 +63,7 @@ export default defineComponent({
             loading.value = false
           }).catch(err => {
             console.log(err)
+            loading.value = false
           })
           console.log(toRaw(modelRef))
         })

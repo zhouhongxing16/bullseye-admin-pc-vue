@@ -43,7 +43,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        if (response.success) {
+        console.log(data)
+        if (data.success) {
           commit('SET_TOKEN', data.token)
           commit('SET_ID', data.id)
           setToken(data.token)
