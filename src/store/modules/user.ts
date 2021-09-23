@@ -42,19 +42,15 @@ const actions = {
   login({ commit }:any, userInfo:any) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        console.log(data)
-        if (data.success) {
-          message.success(data.message);
-          commit('SET_TOKEN', data.token)
-          commit('SET_ID', data.id)
-          setToken(data.token)
-          setIdKey(data.id)
+      login({ username: username.trim(), password: password }).then(res => {
+        if (res.success) {
+          message.success(res.message);
+          commit('SET_TOKEN', res.data.token)
+          setToken(res.data.token)
         }else{
-          message.success(data.message);
+          message.success(res.message);
         }
-        resolve(data)
+        resolve(res)
       }).catch(error => {
         reject(error)
       })

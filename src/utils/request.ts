@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import { message } from 'ant-design-vue';
 
 // axios初始化及相关设置
 const service = axios.create({
@@ -25,7 +26,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    return res
+    if(res.status ==401){
+      message.warning("登录失效，重新登录")
+    }else if(res.status == 500){
+      message.error("服务器错误！")
+    }else{
+      return res
+    }
   },
   error => {
     console.log('error:' + error)
