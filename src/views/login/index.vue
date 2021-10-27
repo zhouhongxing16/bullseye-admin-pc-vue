@@ -4,7 +4,7 @@
       <div class="title">
         登录系统
       </div>
-      <a-form ref="formRef" :rules="rules" layout="horizontal">
+      <a-form ref="formRef" layout="horizontal">
         <a-form-item v-bind="validateInfos.username">
           <a-input class="input" size="large" v-model:value="modelRef.username" placeholder="用户名" >
             <template #prefix><UserOutlined style="color: #889aa4; margin: 0 5px" /></template>
@@ -16,7 +16,7 @@
           </a-input-password>
         </a-form-item>
         <a-form-item>
-          <a-button class="button" type="primary" :loading="loading" style="width: 100%;margin-top: 20px" size="large" @click.prevent="onSubmit">登录</a-button>
+          <a-button class="button" type="primary" :loading="loading" htmlType="submit" style="width: 100%;margin-top: 20px" size="large" @click.prevent="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -26,15 +26,22 @@
 <script lang="ts">
 
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import { defineComponent, reactive, onMounted, UnwrapRef, ref, toRaw } from 'vue'
+import { defineComponent, reactive, ref, toRaw } from 'vue'
 import { Form } from 'ant-design-vue'
 import { useStore } from "vuex"
+import { useRouter, useRoute } from "vue-router"
 
 export default defineComponent({
   name: 'Login',
+  components: {
+    UserOutlined,
+    LockOutlined
+  },
   setup() {
+    const store = useStore()
+    const router = useRouter()
     /*onMounted(() => {
-      console.log('组件已挂载')
+      console.log('间隙置业顾问'.substring(2, 6))
     })*/
 
     let loading = ref(false)
@@ -52,7 +59,6 @@ export default defineComponent({
     }
 
     const { validate, validateInfos } = useForm(modelRef, rulesRef)
-    const store = useStore()
     // 登陆方法
     const onSubmit = () => {
       validate()
@@ -61,7 +67,9 @@ export default defineComponent({
           store.dispatch('login', modelRef).then(() => {
             console.log('成功')
             loading.value = false
+            router.push({ path: '/' })
           }).catch(err => {
+            loading.value = false
             console.log(err)
             loading.value = false
           })
@@ -79,10 +87,6 @@ export default defineComponent({
       rulesRef,
       validateInfos
     }
-  },
-  components: {
-    UserOutlined,
-    LockOutlined
   }
 })
 </script>
@@ -134,7 +138,7 @@ export default defineComponent({
   background-color: rgba(0,0,0,.1);
 }
 
-::v-deep .ant-input {
+::v-deep(.ant-input) {
   background-color: rgba(0, 0, 0, 0) !important;
   color: white !important;
   outline: none !important;

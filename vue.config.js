@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
 function resolve(dir) {
@@ -18,8 +19,8 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
+        target: 'http://127.0.0.1:81',
         // target: 'http://bullseye.curday.com',
-        target: 'http://localhost:8888',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -33,5 +34,14 @@ module.exports = {
         '@': resolve('src')
       }
     }
-  }
+  },
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'scss',
+      patterns: [
+        path.resolve(__dirname, 'src/styles/variables.scss')
+      ]
+    }
+  },
+  runtimeCompiler: true
 }

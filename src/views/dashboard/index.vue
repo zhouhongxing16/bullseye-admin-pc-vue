@@ -1,5 +1,6 @@
 <template>
   <div style="width: 100%; height: 100%; text-align: center;">
+    这里是首页哦~
   </div>
 </template>
 

@@ -44,15 +44,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        console.log(data)
-        if (data.success) {
+        if (response.success) {
           message.success(data.message);
           commit('SET_TOKEN', data.token)
           commit('SET_ID', data.id)
           setToken(data.token)
           setIdKey(data.id)
         }else{
-          message.success(data.message);
+          message.error(data.message);
         }
         resolve(data)
       }).catch(error => {
