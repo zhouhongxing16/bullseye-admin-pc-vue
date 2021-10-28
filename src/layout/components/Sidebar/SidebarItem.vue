@@ -5,7 +5,7 @@
         <template v-if="theOnlyOneChild().meta.icon" #icon>
           <icon class="svg-icon" :icon="theOnlyOneChild().meta.icon"></icon>
         </template>
-        {{resolvePath(theOnlyOneChild().path)}}
+        {{theOnlyOneChild().meta.title}}
       </a-menu-item>
     </template>
 
@@ -14,7 +14,7 @@
         <icon :icon="data.item.meta.icon"></icon>
       </template>
       <template v-if="data.item.meta && data.item.meta.title" #title>
-         {{resolvePath(data.item.path)}}
+         {{data.item.meta.title}}
       </template>
       <template v-if="data.item.children">
         <sidebar-item
@@ -136,6 +136,7 @@ export default defineComponent({
         el.target = '_blank'
         el.rel = 'noopener'
         el.click()
+        el.remove()
       } else {
         router.push(path)
       }

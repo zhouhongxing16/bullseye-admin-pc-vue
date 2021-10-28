@@ -44,6 +44,18 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    path: '/external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://www.baidu.com',
+        name: '百度',
+        component: null,
+        meta: { title: 'External Link', icon: 'HomeOutlined' }
+      }
+    ]
+  },
+  {
     path: '/23',
     name: 'Dashboard333',
     component: Layout,
