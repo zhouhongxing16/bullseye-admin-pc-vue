@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':data.collapse}">
-    <transition name="sidebarLogoFade" :style="data.collapse?'transition:0.3s cubic-bezier(0.645, 0.045, 0.355, 1)':'transition: 0.1s linear'">
+    <transition :style="data.collapse?'transition:0.3s cubic-bezier(0.645, 0.045, 0.355, 1)':'transition: 0.1s linear'">
       <router-link key="collapse" class="sidebar-logo-link" to="/" :class="data.collapse?'margin-type-one':'margin-type-two'">
         <img src="@/assets/logo/logo-min.jpg" :class="data.collapse?'sidebar-logo2':'sidebar-logo'">
         <h1 class="sidebar-title" v-if="!data.collapse">{{ data.title }} </h1>
@@ -46,22 +46,12 @@ export default defineComponent({
     padding: 0 15px 0 15px
   }
 
-  /*.sidebarLogoFade-enter-active {
-    transition: opacity 1.5s;
-  }
-
-  .sidebarLogoFade-enter,
-  .sidebarLogoFade-leave-to {
-    opacity: 0;
-  }*/
-
   .sidebar-logo-container {
     position: relative;
     width: 100%;
     height: 50px;
     line-height: 50px;
     background: #2b2f3a;
-    /*text-align: center;*/
     overflow: hidden;
 
     & .sidebar-logo-link {

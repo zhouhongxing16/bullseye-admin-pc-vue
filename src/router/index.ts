@@ -50,7 +50,8 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/dashboard333',
     meta: {
       title: '3333',
-      icon: 'HomeOutlined'
+      icon: 'HomeOutlined',
+      alwaysShow: true
     },
     children: [
       {
@@ -58,6 +59,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard333',
         meta: { title: '首页1333', icon: 'HomeOutlined', affix: true, noCache: true }
+      },
+      {
+        path: 'dashboard33443',
+        component: () => import('@/views/dashboard/index.vue'),
+        name: 'Dashboard344433',
+        meta: { title: '首页144333', icon: 'HomeOutlined', affix: true, noCache: true }
       }
     ]
   },
@@ -73,7 +80,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: 'd3',
-        component: Layout,
+        component: () => import('@/views/dashboard/index.vue'),
         name: 'D3',
         meta: { title: '首页2', icon: 'HomeOutlined', noCache: true },
         children: [
@@ -94,7 +101,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'test1',
         name: 'test1',
-        component: Layout,
+        component: () => import('@/views/test/index.vue'),
         meta: { title: 'test1', icon: 'HomeOutlined' },
         children: [
           {

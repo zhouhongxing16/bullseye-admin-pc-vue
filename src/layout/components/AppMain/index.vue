@@ -5,11 +5,11 @@
         <router-view :key="state.key" />
       </keep-alive>
     </transition>-->
-    <router-view :key="state.key" v-slot="{ Component }">
-      <keep-alive :include="state.cachedViews">
-        <component :is="Component"></component>
-      </keep-alive>
-    </router-view>
+      <router-view :key="state.key" v-slot="{ Component }">
+        <keep-alive :include="state.cachedViews">
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
   </section>
 </template>
 
@@ -24,8 +24,14 @@ export default defineComponent({
     const router = useRouter()
 
     const state = reactive({
-      cachedViews: computed(() => store.state.tagsView.cachedViews),
-      key: computed(() => router.currentRoute.value.path)
+      cachedViews: computed(() => {
+        console.log('cachedViews:' + store.state.tagsView.cachedViews)
+        return store.state.tagsView.cachedViews
+      }),
+      key: computed(() => {
+        console.log('key:' + router.currentRoute.value.path)
+        return router.currentRoute.value.path
+      })
     })
 
     return {

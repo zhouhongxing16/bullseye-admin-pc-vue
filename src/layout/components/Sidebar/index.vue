@@ -1,15 +1,16 @@
-import path from "path";
 <template>
   <div :class="{'has-logo':init.showLogo}">
     <logo v-if="init.showLogo" :collapse="init.isCollapse" />
-    <a-menu
-      :openKeys="init.openKeys"
-      :selectedKeys="init.activeMenu"
-      :inline-collapsed="init.isCollapse"
-      theme="dark"
-      mode="inline">
-      <sidebar-item v-for="route in init.routes" :key="route.path" :item="route" :base-path="route.path" :is-collapse="init.isCollapse"/>
-    </a-menu>
+    <div class="scrollbar">
+      <a-menu
+        v-model:openKeys="init.openKeys"
+        v-model:selectedKeys="init.activeMenu"
+        :inline-collapsed="init.isCollapse"
+        mode="inline"
+        theme="dark">
+        <sidebar-item v-for="route in init.routes" :key="route.path" :item="route" :base-path="route.path" :is-collapse="init.isCollapse"/>
+      </a-menu>
+    </div>
   </div>
 </template>
 
@@ -59,7 +60,7 @@ export default defineComponent({
         let matched = route.matched
 
         paths.push(matched[0].path)
-        for (let i = 1; i < matched.length; i++) {
+        for (let i = 1; i < matched.length - 1; i++) {
           const match = matched[i]
           if (match.children && match.children.length > 0) {
             const values = match.path.split('/')
@@ -72,6 +73,7 @@ export default defineComponent({
         return paths
       })
     })
+
 
     return {
       init

@@ -13,9 +13,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue'
+import { defineComponent, reactive, computed, watch, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
 import { Navbar, AppMain, Sidebar, TagsView } from './components'
 import { useStore } from "vuex"
+import { useRoute } from "vue-router";
+
 export default defineComponent({
   name: 'Layout',
   components: {
@@ -26,13 +28,66 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
+    const route = useRoute()
+
+    const { body } = document
+    const WIDTH = 992
 
     let state = reactive({
-      sidebar: store => store.app.sidebar,
-      device: store => store.app.device,
-      needTagsView: store => store.settings.tagsView,
-      fixedHeader: store => store.settings.fixedHeader
+      sidebar: computed(() => {
+        return store.getters.sidebar
+      }),
+      device: computed(() => {
+        return store.state.app.device
+      }),
+      needTagsView: computed(() => {
+        return store.state.settings.tagsView
+      }),
+      fixedHeader: computed(() => {
+        return  store.state.settings.fixedHeader
+      }),
+      sidebarOpened: computed(() => {
+        return store.getters.sidebar.opened
+      })
     })
+
+    watch(() => route,() => {
+      if (state.device.toString() == 'mobile' && state.sidebarOpened) {
+        store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      }
+    })
+
+    onBeforeMount(() => {
+      window.addEventListener('resize', resizeHandler)
+    })
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', resizeHandler)
+    })
+
+    onMounted(() => {
+      const mobile = isMobile()
+      if (mobile) {
+        store.dispatch('app/toggleDevice', 'mobile')
+        store.dispatch('app/closeSideBar', { withoutAnimation: true })
+      }
+    })
+
+    const isMobile = () => {
+      const rect = body.getBoundingClientRect()
+      return rect.width - 1 < WIDTH
+    }
+
+    const resizeHandler = () => {
+      if (!document.hidden) {
+        const mobile = isMobile()
+        store.dispatch('app/toggleDevice', mobile ? 'mobile' : 'desktop')
+
+        if (mobile) {
+          store.dispatch('app/closeSideBar', { withoutAnimation: true })
+        }
+      }
+    }
 
     const handleClickOutside = () => {
       store.dispatch('app/closeSideBar', { withoutAnimation: false })
@@ -52,7 +107,9 @@ export default defineComponent({
     return {
       state,
       handleClickOutside,
-      obj
+      obj,
+      isMobile,
+      resizeHandler
     }
   }
 })
@@ -87,20 +144,6 @@ export default defineComponent({
     transition: margin-left .28s;
     margin-left: $sideBarWidth;
     position: relative;
-  }
-
-  .sidebar-container {
-    transition: width 0.28s;
-    transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
-    width: $sideBarWidth !important;
-    height: 100%;
-    position: fixed;
-    font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
-    overflow: hidden;
   }
 
   .fixed-header {
