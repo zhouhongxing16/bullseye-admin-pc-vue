@@ -3,7 +3,7 @@
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in state.visitedViews"
-        ref="tag"
+        :ref="setRef"
         :key="tag.path"
         :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
@@ -39,7 +39,6 @@ export default defineComponent({
     const route = useRoute()
     const store = useStore()
     const router = useRouter()
-    const tag = ref()
 
     const state = reactive({
       visible: false,
@@ -54,16 +53,19 @@ export default defineComponent({
 
     const { proxy } = getCurrentInstance()
 
+    // 获取路由（应改获取权限内的路由）
     const routeArray = computed(() => {
       // return store.state.permission.routes
       return router.options.routes
     })
 
+    // 监听路由地址，增加tag
     watch(() => route.path,() => {
       addTags()
       moveToCurrentTag()
     })
 
+    // 监听右键菜单的变化，进行开关
     watch(() => state.visible,(value) => {
       if (value) {
         document.body.addEventListener('click', closeMenu)
@@ -72,19 +74,23 @@ export default defineComponent({
       }
     })
 
+    // 初始化tags
     onMounted(() => {
       initTags()
       addTags()
     })
 
+    // 是否活动中的菜单
     const isActive = (routeValue:any) => {
       return routeValue.path === route.path
     }
 
+    // 是否Affix，如果是，则不显示关闭按钮
     const isAffix = (tag:any) => {
       return tag.meta && tag.meta.affix
     }
 
+    // 返回所有Affix的路由
     const filterAffixTags = (routes, basePath = '/') => {
       let tags = []
       if (routeArray.value) {
@@ -109,6 +115,7 @@ export default defineComponent({
       return tags
     }
 
+    // tags的初始化
     const initTags = () => {
       const affixTags = state.affixTags = filterAffixTags(routeArray.value)
       for (const tag of affixTags) {
@@ -119,6 +126,7 @@ export default defineComponent({
       }
     }
 
+    // 添加tags
     const addTags = () => {
       const { name } = route
       if (name) {
@@ -131,7 +139,11 @@ export default defineComponent({
     const setRef = (el) => {
       myTag.value.push(el)
     }
+    nextTick(() => {
+      console.dir(myTag.value);
+    })
 
+    // query不同时，变更记录
     const moveToCurrentTag = () => {
       const tags = myTag.value
       nextTick(() => {
@@ -148,6 +160,7 @@ export default defineComponent({
       })
     }
 
+    // 刷新页面，先移除，再跳转
     const refreshSelectedTag = (view:any) => {
       store.dispatch('tagsView/delCachedView', view).then(() => {
         const { fullPath } = view
@@ -159,6 +172,7 @@ export default defineComponent({
       })
     }
 
+    // 关闭选中的tag
     const closeSelectedTag = (view:any) => {
       store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (isActive(view)) {
@@ -167,6 +181,7 @@ export default defineComponent({
       })
     }
 
+    // 关闭其他的tag
     const closeOthersTags = () => {
       router.push(state.selectedTag)
       store.dispatch('tagsView/delOthersViews', state.selectedTag).then(() => {
@@ -174,6 +189,7 @@ export default defineComponent({
       })
     }
 
+    // 关闭全部tag
     const closeAllTags = (view:any) => {
       store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
         if (state.affixTags.some(tag => tag.path === view.path)) {
@@ -217,6 +233,7 @@ export default defineComponent({
       state.selectedTag = tag
     }
 
+    // 关闭弹窗
     const closeMenu = () => {
       state.visible = false
     }
@@ -228,6 +245,7 @@ export default defineComponent({
     return {
       state,
       routeArray,
+      setRef,
       isActive,
       isAffix,
       filterAffixTags,
