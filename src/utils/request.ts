@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import { message } from 'ant-design-vue';
 
 // axios初始化及相关设置
 const service = axios.create({
@@ -24,8 +25,23 @@ service.interceptors.request.use(
 // axios返回处理设置
 service.interceptors.response.use(
   response => {
-    const res = response.data
-    return res
+    const res = response
+    if(res.status ==401){
+      message.warning("登录失效，重新登录")
+    }else if(res.status == 500){
+      message.error("服务器错误！")
+    }else if(res.status == 404){
+      message.error("404 Not Found")
+    }else if(res.status == 200){
+      if(res.data.success){
+        return res
+      }else{
+        message.error(res.data.message)
+      }
+    }else{
+      console.log(111)
+      message.error("UnKnow!")
+    }
   },
   error => {
     console.log('error:' + error)

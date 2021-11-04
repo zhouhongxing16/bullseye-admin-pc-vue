@@ -59,7 +59,7 @@ export default defineComponent({
     // 登陆方法
     const onSubmit = () => {
       validate()
-        .then(() => {
+        .then((res) => {
           loading.value = true
           store.dispatch('login', modelRef).then(() => {
             console.log('成功')
