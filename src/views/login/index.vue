@@ -40,9 +40,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const router = useRouter()
-    /*onMounted(() => {
-      console.log('间隙置业顾问'.substring(2, 6))
-    })*/
 
     let loading = ref(false)
 

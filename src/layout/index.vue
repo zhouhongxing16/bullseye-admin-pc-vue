@@ -35,7 +35,7 @@ export default defineComponent({
 
     let state = reactive({
       sidebar: computed(() => {
-        return store.getters.sidebar
+        return store.state.app.sidebar
       }),
       device: computed(() => {
         return store.state.app.device
@@ -44,19 +44,22 @@ export default defineComponent({
         return store.state.settings.tagsView
       }),
       fixedHeader: computed(() => {
-        return  store.state.settings.fixedHeader
+        return store.state.settings.fixedHeader
       }),
       sidebarOpened: computed(() => {
         return store.getters.sidebar.opened
       })
     })
 
+    // 监听路由
     watch(() => route,() => {
-      if (state.device.toString() == 'mobile' && state.sidebarOpened) {
+      console.log(state.sidebar.opened)
+      if (state.device.toString() == 'mobile' && state.sidebar.opened) {
         store.dispatch('app/closeSideBar', { withoutAnimation: false })
       }
     })
 
+    // 监听页面大小变化
     onBeforeMount(() => {
       window.addEventListener('resize', resizeHandler)
     })
@@ -65,6 +68,7 @@ export default defineComponent({
       window.removeEventListener('resize', resizeHandler)
     })
 
+    // 初始化模式
     onMounted(() => {
       const mobile = isMobile()
       if (mobile) {
@@ -74,6 +78,7 @@ export default defineComponent({
     })
 
     const isMobile = () => {
+      // 返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示元素各边与页面上边和左边的距离
       const rect = body.getBoundingClientRect()
       return rect.width - 1 < WIDTH
     }
@@ -81,6 +86,7 @@ export default defineComponent({
     const resizeHandler = () => {
       if (!document.hidden) {
         const mobile = isMobile()
+        // 切换模式
         store.dispatch('app/toggleDevice', mobile ? 'mobile' : 'desktop')
 
         if (mobile) {
@@ -89,6 +95,7 @@ export default defineComponent({
       }
     }
 
+    // 点击背景时，关闭sidebar
     const handleClickOutside = () => {
       store.dispatch('app/closeSideBar', { withoutAnimation: false })
     }
@@ -96,10 +103,10 @@ export default defineComponent({
     const obj = reactive({
       classObj: computed(() => {
         return {
-          hideSidebar: !store.getters.sidebar.opened,
-          openSidebar: store.getters.sidebar.opened,
-          withoutAnimation: store.getters.sidebar.withoutAnimation,
-          mobile: store.getters.device === 'mobile'
+          hideSidebar: !store.getters.sidebar.opened, // 隐藏sidebar
+          openSidebar: store.getters.sidebar.opened, // 打开sidebar
+          withoutAnimation: store.getters.sidebar.withoutAnimation, // 关闭动画
+          mobile: store.getters.device === 'mobile' // 手机模式
         }
       })
     })

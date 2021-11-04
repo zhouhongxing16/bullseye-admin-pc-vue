@@ -1,7 +1,7 @@
 <template>
   <div :class="{'has-logo':init.showLogo}">
     <logo v-if="init.showLogo" :collapse="init.isCollapse" />
-    <div class="scrollbar">
+    <c-scrollbar class="scrollbar">
       <a-menu
         v-model:openKeys="init.openKeys"
         v-model:selectedKeys="init.activeMenu"
@@ -10,7 +10,7 @@
         theme="dark">
         <sidebar-item v-for="route in init.routes" :key="route.path" :item="route" :base-path="route.path" :is-collapse="init.isCollapse"/>
       </a-menu>
-    </div>
+    </c-scrollbar>
   </div>
 </template>
 
@@ -69,11 +69,9 @@ export default defineComponent({
             paths.push(match.path)
           }
         }
-        console.log('触发')
         return paths
       })
     })
-
 
     return {
       init

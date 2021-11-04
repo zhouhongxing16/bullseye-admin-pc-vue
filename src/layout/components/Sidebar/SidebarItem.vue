@@ -125,7 +125,7 @@ export default defineComponent({
       if (isExternal(data.basePath)) {
         return data.basePath.toString()
       }
-      //console.log(data.basePath + '  ' + routePath)
+
       return path.resolve(data.basePath.toString(), routePath)
     }
 

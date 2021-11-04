@@ -1,9 +1,9 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
+    <scroll-pane :ref="setScrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in state.visitedViews"
-        :ref="setRef"
+        :ref="setTagRef"
         :key="tag.path"
         :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
@@ -51,7 +51,6 @@ export default defineComponent({
       })
     })
 
-    const { proxy } = getCurrentInstance()
 
     // 获取路由（应改获取权限内的路由）
     const routeArray = computed(() => {
@@ -135,21 +134,37 @@ export default defineComponent({
       return false
     }
 
-    const myTag = ref([])
-    const setRef = (el) => {
-      myTag.value.push(el)
+    let tagList = ref([])
+    const setTagRef = async(el) => {
+      if (tagList.value.indexOf(el) == -1 && el !=null) {
+        tagList.value.push(el)
+      }
     }
-    nextTick(() => {
-      console.dir(myTag.value);
-    })
+
+    // 移除tagList的元素
+    const removeTagList = (view:any) => {
+      const newTagList = tagList.value
+      tagList.value.splice(0, tagList.value.length)
+      for (let i = 0; i < newTagList.length; i++) {
+        const item = newTagList[i]
+        if (item !=null && item.path !== view.path) {
+          tagList.value.push(item)
+        }
+      }
+    }
+
+    const scrollPane = ref()
+    const setScrollPane = (el) => {
+      scrollPane.value = el
+    }
 
     // query不同时，变更记录
     const moveToCurrentTag = () => {
-      const tags = myTag.value
+      const tags = tagList.value
       nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === route.path) {
-            //scrollPane.moveToTarget(tag)
+            scrollPane.value.moveToTarget(tag, tags)
             // when query is different then update
             if (tag.to.fullPath !== route.fullPath) {
               store.dispatch('tagsView/updateVisitedView', route)
@@ -177,6 +192,7 @@ export default defineComponent({
       store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (isActive(view)) {
           toLastView(visitedViews, view)
+          removeTagList(view)
         }
       })
     }
@@ -199,6 +215,7 @@ export default defineComponent({
       })
     }
 
+    // 选中最后一个
     const toLastView = (visitedViews, view) => {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
@@ -215,6 +232,8 @@ export default defineComponent({
       }
     }
 
+    const { proxy } = getCurrentInstance()
+    // 计算打开弹窗时的位置
     const openMenu = (tag, e) => {
       const menuMinWidth = 105
       const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
@@ -245,7 +264,9 @@ export default defineComponent({
     return {
       state,
       routeArray,
-      setRef,
+      tagList,
+      setTagRef,
+      setScrollPane,
       isActive,
       isAffix,
       filterAffixTags,

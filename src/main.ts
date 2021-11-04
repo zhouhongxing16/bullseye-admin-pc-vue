@@ -1,4 +1,4 @@
-import { createApp } from "vue"
+import { createApp, nextTick } from "vue"
 import App from "./App.vue"
 import router from "./router"
 import store from "./store"
@@ -10,8 +10,13 @@ import '@/styles/index.scss'
 
 import '@/permission'
 
-createApp(App)
-  .use(store)
+// 滚动条
+import CScrollbar from 'c-scrollbar'
+
+const app = createApp(App)
+
+app.use(store)
   .use(router)
   .use(Antd)
+  .use(CScrollbar)
   .mount("#app")

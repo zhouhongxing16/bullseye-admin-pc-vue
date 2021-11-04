@@ -25,11 +25,9 @@ export default defineComponent({
 
     const state = reactive({
       cachedViews: computed(() => {
-        console.log('cachedViews:' + store.state.tagsView.cachedViews)
         return store.state.tagsView.cachedViews
       }),
       key: computed(() => {
-        console.log('key:' + router.currentRoute.value.path)
         return router.currentRoute.value.path
       })
     })

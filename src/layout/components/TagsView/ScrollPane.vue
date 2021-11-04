@@ -1,64 +1,68 @@
 <template>
-  <div ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.prevent="handleScroll">
+  <c-scrollbar :ref="setRef" class="scroll-container" @wheel.prevent="handleScroll">
     <slot />
-  </div>
+  </c-scrollbar>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue'
+import { defineComponent, ref } from 'vue'
 export default defineComponent({
   name: 'ScrollPane',
   setup(props, content) {
-    let left = 0
+    const scrollContainer = ref()
+    const setRef = (el) => {
+      scrollContainer.value = el
+    }
 
-    const tagAndTagSpacing = 4
-
-    const { proxy } = getCurrentInstance()
-
-    const scrollWrapper  = computed(() =>{
-      return proxy.$refs.scrollContainer as HTMLElement
-    })
-
-    onMounted(() => {
-      scrollWrapper.value.addEventListener('scroll', emitScroll, true)
+    /*onMounted(() => {
+      scrollContainer.value.wrapRef.addEventListener('scroll', emitScroll, true)
     })
 
     onBeforeUnmount(() => {
-      scrollWrapper.value.removeEventListener('scroll', emitScroll)
-    })
+      scrollContainer.value.wrapRef.removeEventListener('scroll', emitScroll)
+    })*/
 
+    // 鼠标滚轮滚动时触发
     const handleScroll = (e:any) => {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
-      scrollWrapper.value.scrollLeft = scrollWrapper.value.scrollLeft + eventDelta / 4
+      scrollContainer.value.wrapRef.scrollLeft = scrollContainer.value.wrapRef.scrollLeft - eventDelta / 4
     }
 
     const emitScroll = () => {
       content.emit('scroll')
     }
 
-    const moveToTarget = (currentTag:any) => {
-      /*const $container = scrollWrapper.value.$el
-      const $containerWidth = $container.offsetWidth
-      const $scrollWrapper = scrollWrapper.value
-      const tagList = proxy.$parent.$refs.tag
+    const tagAndTagSpacing = 4 // tag与tag之间的空间
+
+    const moveToTarget = (currentTag:any, tagList: any) => {
+      // 获取scrollContainer组件
+      const container = scrollContainer.value.$el
+      // 获取scrollContainer组件的宽度
+      const containerWidth = container.offsetWidth
+      // 获取scrollContainer组件的内部组件
+      const scrollWrapper = scrollContainer.value.wrapRef
 
       let firstTag = null
       let lastTag = null
 
-      // find first tag and last tag
+      // 获取第一个和最后一个tag
       if (tagList.length > 0) {
         firstTag = tagList[0]
         lastTag = tagList[tagList.length - 1]
       }
 
+      // 如果移动到是第一个tag，则滚动条直接到最左边
       if (firstTag === currentTag) {
-        $scrollWrapper.scrollLeft = 0
+        scrollWrapper.scrollLeft = 0
       } else if (lastTag === currentTag) {
-        $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
+        scrollWrapper.scrollLeft = scrollWrapper.scrollWidth - containerWidth
       } else {
         // find preTag and nextTag
+        // 找到当前tag的位置
         const currentIndex = tagList.findIndex(item => item === currentTag)
+        // 找到前一个tag
         const prevTag = tagList[currentIndex - 1]
+        // 找到后一个tag
         const nextTag = tagList[currentIndex + 1]
 
         // the tag's offsetLeft after of nextTag
@@ -67,19 +71,20 @@ export default defineComponent({
         // the tag's offsetLeft before of prevTag
         const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
 
-        if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
-          $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
-        } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
-          $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
+        if (afterNextTagOffsetLeft > scrollWrapper.scrollLeft + containerWidth) {
+          scrollWrapper.scrollLeft = afterNextTagOffsetLeft - containerWidth
+        } else if (beforePrevTagOffsetLeft < scrollWrapper.scrollLeft) {
+          scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
         }
-      }*/
+      }
     }
 
 
     return {
-      left,
+      /*left,
       scrollWrapper,
-      emitScroll,
+      emitScroll,*/
+      setRef,
       handleScroll,
       moveToTarget
     }
