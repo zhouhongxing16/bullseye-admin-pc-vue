@@ -60,7 +60,10 @@
         }
       }
     }
+  }
 
+  .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+    border-right: 0;
   }
 
   // mobile responsive

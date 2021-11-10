@@ -2,7 +2,7 @@
 $sideBarWidth: 210px;
 
 $menuBgDark: #001529;
-$menuBgLight: #FAFAFA;
+$menuBgLight: #ffffff;
 
 $logoBgDark: #2b2f3a;
 $logoBgLight: #ebebeb;
@@ -17,6 +17,7 @@ $logoTextLight: #000000;
   }
   [data-theme='light'] & {
     background-color: $menuBgLight;
+    border-right: 1px solid #F0F0F0;
   }
 }
 
