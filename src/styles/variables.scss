@@ -10,7 +10,6 @@ $logoTextDark: #ffffff;
 $logoTextLight: #000000;
 
 @mixin menuBg($color) {
-  transition: background-color 0.3s;
   background-color: $color;
   [data-theme='dark'] & {
     background-color: $menuBgDark;
@@ -22,7 +21,6 @@ $logoTextLight: #000000;
 }
 
 @mixin logoBg($color) {
-  transition: background-color 0.3s;
   background-color: $color;
   [data-theme='dark'] & {
     background-color: $logoBgDark;
@@ -34,7 +32,6 @@ $logoTextLight: #000000;
 }
 
 @mixin logoText($color) {
-  transition: background-color 0.3s;
   color: $color;
   [data-theme='dark'] & {
     color: $logoTextDark;

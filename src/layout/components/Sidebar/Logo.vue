@@ -53,6 +53,7 @@ export default defineComponent({
     width: 100%;
     height: 50px;
     line-height: 50px;
+    transition: background-color 0.3s;
     @include logoBg($logoBgDark);
     //background: #2b2f3a;
     overflow: hidden;
