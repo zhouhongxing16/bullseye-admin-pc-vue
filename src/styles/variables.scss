@@ -1,25 +1,50 @@
 // sidebar
-$menuText:#bfcbd9;
-$menuActiveText:#409EFF;
-$subMenuActiveText:#f4f4f5; //https://github.com/ElemeFE/element/issues/12951
-
-$menuBg:#001529;
-$menuHover:#263445;
-
-$subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
-
 $sideBarWidth: 210px;
+
+$menuBgDark: #001529;
+$menuBgLight: #FAFAFA;
+
+$logoBgDark: #2b2f3a;
+$logoBgLight: #ebebeb;
+$logoTextDark: #ffffff;
+$logoTextLight: #000000;
+
+@mixin menuBg($color) {
+  transition: background-color 0.3s;
+  background-color: $color;
+  [data-theme='dark'] & {
+    background-color: $menuBgDark;
+  }
+  [data-theme='light'] & {
+    background-color: $menuBgLight;
+  }
+}
+
+@mixin logoBg($color) {
+  transition: background-color 0.3s;
+  background-color: $color;
+  [data-theme='dark'] & {
+    background-color: $logoBgDark;
+
+  }
+  [data-theme='light'] & {
+    background-color: $logoBgLight;
+  }
+}
+
+@mixin logoText($color) {
+  transition: background-color 0.3s;
+  color: $color;
+  [data-theme='dark'] & {
+    color: $logoTextDark;
+  }
+  [data-theme='light'] & {
+    color: $logoTextLight;
+  }
+}
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
-  menuText: $menuText;
-  menuActiveText: $menuActiveText;
-  subMenuActiveText: $subMenuActiveText;
-  menuBg: $menuBg;
-  menuHover: $menuHover;
-  subMenuBg: $subMenuBg;
-  subMenuHover: $subMenuHover;
   sideBarWidth: $sideBarWidth;
 }

@@ -1,13 +1,13 @@
 <template>
   <div :class="{'has-logo':init.showLogo}">
     <logo v-if="init.showLogo" :collapse="init.isCollapse" />
-    <c-scrollbar class="scrollbar">
+    <c-scrollbar class="scrollbar" direction="y" trigger="none">
       <a-menu
         v-model:openKeys="init.openKeys"
         v-model:selectedKeys="init.activeMenu"
         :inline-collapsed="init.isCollapse"
         mode="inline"
-        theme="dark">
+        :theme="init.theme">
         <sidebar-item v-for="route in init.routes" :key="route.path" :item="route" :base-path="route.path" :is-collapse="init.isCollapse"/>
       </a-menu>
     </c-scrollbar>
@@ -70,6 +70,9 @@ export default defineComponent({
           }
         }
         return paths
+      }),
+      theme: computed(() => {
+        return store.state.settings.theme
       })
     })
 

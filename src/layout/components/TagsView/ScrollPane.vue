@@ -1,11 +1,11 @@
 <template>
-  <c-scrollbar :ref="setRef" class="scroll-container" @wheel.prevent="handleScroll">
+  <c-scrollbar :ref="setRef" direction="x" trigger="none" class="scroll-container" @wheel.prevent="handleScroll">
     <slot />
   </c-scrollbar>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import {defineComponent, onMounted, ref, nextTick} from 'vue'
 export default defineComponent({
   name: 'ScrollPane',
   setup(props, content) {
@@ -13,14 +13,6 @@ export default defineComponent({
     const setRef = (el) => {
       scrollContainer.value = el
     }
-
-    /*onMounted(() => {
-      scrollContainer.value.wrapRef.addEventListener('scroll', emitScroll, true)
-    })
-
-    onBeforeUnmount(() => {
-      scrollContainer.value.wrapRef.removeEventListener('scroll', emitScroll)
-    })*/
 
     // 鼠标滚轮滚动时触发
     const handleScroll = (e:any) => {

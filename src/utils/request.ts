@@ -26,20 +26,18 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response
-    if(res.status ==401){
+    if (res.status == 401) {
       message.warning("登录失效，重新登录")
-    }else if(res.status == 500){
+    } else if (res.status == 500) {
       message.error("服务器错误！")
-    }else if(res.status == 404){
+    } else if (res.status == 404) {
       message.error("404 Not Found")
-    }else if(res.status == 200){
-      if(res.data.success){
-        return res
-      }else{
+    } else if (res.status == 200) {
+      if(!response.data.success){
         message.error(res.data.message)
       }
-    }else{
-      console.log(111)
+      return res
+    } else {
       message.error("UnKnow!")
     }
   },

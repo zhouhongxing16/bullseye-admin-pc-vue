@@ -36,6 +36,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+  @import "~@/styles/variables.scss";
+
   .margin-type-one {
     text-align: left;
     padding: 0 22px 0 22px
@@ -51,7 +53,8 @@ export default defineComponent({
     width: 100%;
     height: 50px;
     line-height: 50px;
-    background: #2b2f3a;
+    @include logoBg($logoBgDark);
+    //background: #2b2f3a;
     overflow: hidden;
 
     & .sidebar-logo-link {
@@ -75,7 +78,8 @@ export default defineComponent({
       & .sidebar-title {
         display: inline-block;
         margin: 0;
-        color: #fff;
+        @include logoText($logoTextDark);
+        //color: #fff;
         font-weight: 600;
         line-height: 50px;
         font-size: 14px;

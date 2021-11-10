@@ -2,6 +2,8 @@
   <div :class="obj.classObj" class="app-wrapper">
     <div v-if="state.device==='mobile'&&state.sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
     <sidebar class="sidebar-container" />
+    <settings class="settings-container"/>
+
     <div :class="{hasTagsView: state.needTagsView}" class="main-container">
       <div :class="{'fixed-header':state.fixedHeader}">
         <navbar />
@@ -14,7 +16,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, computed, watch, onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
-import { Navbar, AppMain, Sidebar, TagsView } from './components'
+import { Navbar, AppMain, Sidebar, TagsView, Settings } from './components'
 import { useStore } from "vuex"
 import { useRoute } from "vue-router";
 
@@ -24,14 +26,15 @@ export default defineComponent({
     Navbar,
     AppMain,
     Sidebar,
-    TagsView
+    TagsView,
+    Settings
   },
   setup() {
     const store = useStore()
     const route = useRoute()
 
     const { body } = document
-    const WIDTH = 992
+    const WIDTH = 700
 
     let state = reactive({
       sidebar: computed(() => {
@@ -62,6 +65,11 @@ export default defineComponent({
     // 监听页面大小变化
     onBeforeMount(() => {
       window.addEventListener('resize', resizeHandler)
+      const mobile = isMobile()
+      if (mobile) {
+        store.dispatch('app/toggleDevice', 'mobile')
+        store.dispatch('app/closeSideBar', { withoutAnimation: true })
+      }
     })
 
     onBeforeUnmount(() => {
@@ -69,13 +77,9 @@ export default defineComponent({
     })
 
     // 初始化模式
-    onMounted(() => {
-      const mobile = isMobile()
-      if (mobile) {
-        store.dispatch('app/toggleDevice', 'mobile')
-        store.dispatch('app/closeSideBar', { withoutAnimation: true })
-      }
-    })
+    /*onMounted(() => {
+
+    })*/
 
     const isMobile = () => {
       // 返回一个矩形对象，包含四个属性：left、top、right和bottom。分别表示元素各边与页面上边和左边的距离
@@ -136,6 +140,7 @@ export default defineComponent({
       top: 0;
     }
   }
+
   .drawer-bg {
     background: #000;
     opacity: 0.3;
@@ -144,13 +149,6 @@ export default defineComponent({
     height: 100%;
     position: absolute;
     z-index: 999;
-  }
-
-  .main-container {
-    min-height: 100%;
-    transition: margin-left .28s;
-    margin-left: $sideBarWidth;
-    position: relative;
   }
 
   .fixed-header {
@@ -168,5 +166,13 @@ export default defineComponent({
 
   .mobile .fixed-header {
     width: 100%;
+  }
+
+  .settings-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 10;
   }
 </style>

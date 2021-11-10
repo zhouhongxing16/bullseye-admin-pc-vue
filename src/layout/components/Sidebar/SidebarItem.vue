@@ -154,19 +154,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
-  /*.full-mode {
-    .nest-menu .a-submenu>.a-submenu__title,
-    .a-submenu .a-menu-item {
-      min-width: $sideBarWidth !important;
-      background-color: $subMenuBg !important;
-
-      &:hover {
-        background-color: $subMenuHover !important;
-      }
-    }
-  }*/
-
   .simple-mode {
     &.first-level {
       .submenu-title-noDropdown {
