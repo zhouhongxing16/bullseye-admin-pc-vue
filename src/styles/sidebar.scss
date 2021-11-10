@@ -66,6 +66,11 @@
     border-right: 0;
   }
 
+  .ant-menu-inline .ant-menu-item,
+  .ant-menu-inline .ant-menu-submenu-title {
+    width: calc(100% + 0px);
+  }
+
   // mobile responsive
   .mobile {
     .main-container {
