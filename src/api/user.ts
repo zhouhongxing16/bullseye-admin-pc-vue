@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function login(data:any) {
   return request({
-    url: '/login',
+    url: '/login/adminLogin',
     method: 'post',
     data
   })
 }
 
-export function getInfo(id:string) {
+export function getAccountInfo() {
   return request({
-    url: '/account/getAccount/' + id,
+    url: '/account/getMyAccountInfo',
     method: 'get'
   })
 }

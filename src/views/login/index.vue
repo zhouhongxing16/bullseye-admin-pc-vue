@@ -29,7 +29,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { defineComponent, reactive, ref, toRaw } from 'vue'
 import { Form } from 'ant-design-vue'
 import { useStore } from "vuex"
-import { useRouter, useRoute } from "vue-router"
+import { useRouter } from "vue-router"
 
 export default defineComponent({
   name: 'Login',
@@ -61,7 +61,7 @@ export default defineComponent({
       validate()
         .then((res) => {
           loading.value = true
-          store.dispatch('login', modelRef).then(() => {
+          store.dispatch('user/login', modelRef).then(() => {
             console.log('成功')
             loading.value = false
             router.push({ path: '/' })
@@ -70,7 +70,6 @@ export default defineComponent({
             console.log(err)
             loading.value = false
           })
-          console.log(toRaw(modelRef))
         })
         .catch(err => {
           console.log('error', err)

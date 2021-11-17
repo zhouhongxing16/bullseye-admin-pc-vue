@@ -157,7 +157,7 @@ export default defineComponent({
     right: 0;
     z-index: 9;
     width: calc(100% - #{$sideBarWidth});
-    transition: width 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .hideSidebar .fixed-header {

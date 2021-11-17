@@ -4,6 +4,7 @@ import app from './modules/app'
 import user from './modules/user'
 import settings from './modules/settings'
 import tagsView from './modules/tagsView'
+import permission from './modules/permission'
 
 // vuex相关配置
 export default createStore({
@@ -11,7 +12,8 @@ export default createStore({
     app,
     user,
     settings,
-    tagsView
+    tagsView,
+    permission
   },
   getters
 })

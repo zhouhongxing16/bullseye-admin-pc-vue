@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 const { tagsView, fixedHeader, sidebarLogo } = defaultSettings
 
 const state = {
-  theme: Cookies.get('theme') == 'dark' ? 'dark': 'light',
+  theme: Cookies.get('theme') == 'dark' || !Cookies.get('theme') ? 'dark': 'light',
   fixedHeader: fixedHeader, //
   tagsView: tagsView,
   sidebarLogo: sidebarLogo

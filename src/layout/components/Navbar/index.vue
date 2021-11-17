@@ -5,10 +5,11 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <a-dropdown class="avatar-container" trigger="click" placement="bottomRight">
+      <a-dropdown class="avatar-container" trigger="hover" placement="bottomRight">
         <div class="ant-dropdown-link">
           <div class="avatar-wrapper">
-            <img src="@/assets/logo/logo.png" class="user-avatar">
+            <a-avatar v-if="state.avatar && state.avatar.length > 0" :src="state.avatar" class="user-avatar"/>
+            <a-avatar v-else class="user-avatar">{{ state.name }}</a-avatar>
             <CaretDownFilled class="icon-caret-bottom"/>
           </div>
         </div>
@@ -46,7 +47,9 @@ export default defineComponent({
     let state = reactive({
       opened: computed(() => {
         return store.getters.sidebar.opened
-      })
+      }),
+      avatar: store.getters.avatar,
+      name: store.getters.name
     })
 
     const toggleSideBar = () => {
@@ -54,7 +57,7 @@ export default defineComponent({
     }
 
     const logout = () => {
-      store.dispatch('logout')
+      store.dispatch('user/logout')
       router.push(`/login?redirect=${route.fullPath}`)
     }
 
@@ -126,10 +129,15 @@ export default defineComponent({
           position: relative;
 
           .user-avatar {
+            transition: all .5s;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 39px;
+            height: 39px;
+            border: 2px solid rgba(0, 0, 0, 0);
+            padding: 0;
+            &:hover {
+              border: 2px solid #C5C7C9;
+            }
           }
 
           .icon-caret-bottom {

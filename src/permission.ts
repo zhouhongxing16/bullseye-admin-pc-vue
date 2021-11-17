@@ -1,6 +1,7 @@
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
+import store from "./store"
 import router from './router'
 
 NProgress.configure({ showSpinner:false })
@@ -19,14 +20,23 @@ router.beforeEach(async(to: any, from: any, next: any) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      try {
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      if (hasRoles) {
         next()
-      } catch (error) {
-        // remove token and go to login page to re-login
-        // await store.dispatch('resetToken')
-        // Message.error(error || 'Has Error')
-        next(`/login?redirect=${to.path}`)
-        NProgress.done()
+      } else {
+        try {
+          const { roles } = await store.dispatch('user/getAccountInfo')
+
+          await store.dispatch('permission/getMenusByAccountId', roles)
+
+          next()
+        } catch (error) {
+          // remove token and go to login page to re-login
+          // Message.error(error || 'Has Error')
+          await store.dispatch('user/resetToken')
+          next(`/login?redirect=${to.path}`)
+          NProgress.done()
+        }
       }
     }
   } else {
