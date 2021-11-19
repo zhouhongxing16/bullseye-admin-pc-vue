@@ -29,9 +29,10 @@ router.beforeEach(async(to: any, from: any, next: any) => {
 
           const accessRoutes = await store.dispatch('permission/getMenusByAccountId', roles)
 
-          router.addRoute(accessRoutes[0])
+          //router.addRoute(accessRoutes[0])
 
-          next({ ...to, replace: true })
+          //next({ ...to, replace: true })
+          next()
         } catch (error) {
           // remove token and go to login page to re-login
           // Message.error(error || 'Has Error')

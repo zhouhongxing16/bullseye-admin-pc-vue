@@ -1,6 +1,8 @@
 import axios from 'axios'
 import store from '@/store'
 import { message } from 'ant-design-vue';
+import router from "@/router";
+import NProgress from 'nprogress'
 
 // axios初始化及相关设置
 const service = axios.create({
@@ -43,7 +45,20 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('error:' + error)
+    console.log('error:' + error.response.status)
+    const status = error.response.status
+    if (status == 401) {
+      message.warning("登录失效，请重新登录！")
+      NProgress.done()
+      store.dispatch('user/logout')
+      router.replace({
+        path: 'login'
+      })
+    } else if (status == 500) {
+      message.error("服务器错误！")
+    } else if (status == 404) {
+      message.error("404 Not Found")
+    }
     return Promise.reject(error)
   }
 )
