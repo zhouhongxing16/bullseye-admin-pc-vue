@@ -31,7 +31,7 @@ export default defineComponent({
 
     let init = reactive({
       routes: computed(() => {
-        return router.options.routes
+        return store.getters.permissionRoutes
       }),
       activeMenu: computed(() => {
         const { meta, path } = route
