@@ -85,13 +85,13 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: 'dashboard333',
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard333',
-        meta: { title: '首页1333', icon: 'HomeOutlined', affix: true, noCache: true }
+        meta: { title: '首页1333', icon: 'HomeOutlined', affix: false, noCache: true }
       },
       {
         path: 'dashboard33443',
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard344433',
-        meta: { title: '首页144333', icon: 'HomeOutlined', affix: true, noCache: true }
+        meta: { title: '首页144333', icon: 'HomeOutlined', affix: false, noCache: true }
       }
     ]
   },

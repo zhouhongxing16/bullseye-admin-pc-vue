@@ -67,13 +67,13 @@ const actions = {
         const { data } = response
 
         if (!data) {
-          reject('登录失败，请重试')
+          message.success('登录失败，请重试')
         }
 
         const { roles, name, avatar } = data.data
 
         if (!roles || roles.length <= 0) {
-          reject('未获取到用户权限!')
+          message.success('未获取到用户权限!')
         }
 
         commit('SET_ROLES', roles)

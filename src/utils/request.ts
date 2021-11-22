@@ -51,9 +51,7 @@ service.interceptors.response.use(
       message.warning("登录失效，请重新登录！")
       NProgress.done()
       store.dispatch('user/logout')
-      router.replace({
-        path: 'login'
-      })
+      router.replace({path: 'login'})
     } else if (status == 500) {
       message.error("服务器错误！")
     } else if (status == 404) {
