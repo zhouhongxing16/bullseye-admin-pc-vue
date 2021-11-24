@@ -1,15 +1,17 @@
 import Cookies from 'js-cookie'
 
+// sidebar管理
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? !!+ Cookies.get('sidebarStatus') : true,
-    withoutAnimation: false
+    opened: Cookies.get('sidebarStatus') ? !!+ Cookies.get('sidebarStatus') : true, // 伸缩状态
+    withoutAnimation: false // 无动画
   },
-  device: 'desktop',
+  device: 'desktop', // 模式
   size: Cookies.get('size') || 'medium'
 }
 
 const mutations = {
+  // 模式切换
   TOGGLE_SIDEBAR: (state: any) => {
     state.sidebar.opened = !state.sidebar.opened
     state.sidebar.withoutAnimation = false
@@ -19,6 +21,7 @@ const mutations = {
       Cookies.set('sidebarStatus', '0')
     }
   },
+  // 关闭sidebar
   CLOSE_SIDEBAR: (state: any, withoutAnimation: any) => {
     Cookies.set('sidebarStatus', '0')
     state.sidebar.opened = false

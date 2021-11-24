@@ -1,12 +1,16 @@
 <template>
+  <!-- 右侧主题设置栏 -->
   <div>
+    <!-- 遮罩 -->
     <transition name="fade">
       <div v-if="state.visible" :class="['mask']" @click="close"></div>
     </transition>
     <div :class="['drawer', state.placement, state.visible ? 'open' : 'close']">
+      <!-- 设置模块主体 -->
       <div ref="drawer" class="content">
         <slot></slot>
       </div>
+      <!-- 左侧伸缩按钮 -->
       <div v-if="state.showHandler" :class="['handler-container', state.placement, state.visible ? 'open' : 'close']" ref="handler" @click="toggle">
         <slot v-if="$slots.handler" name="handler"></slot>
         <div v-else class="handler">
@@ -59,17 +63,14 @@ export default defineComponent({
 
     const open = () => {
       state.visible = true
-      //content.emit('change', true)
     }
 
     const close = () => {
-      //content.emit('change', false)
       state.visible = false
     }
 
     const toggle = () => {
       state.visible = !state.visible
-      //content.emit('change', !state.visible)
     }
 
     return {

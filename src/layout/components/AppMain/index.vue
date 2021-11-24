@@ -1,10 +1,5 @@
 <template>
   <section class="app-main">
-    <!--<transition name="fade-transform" mode="out-in">
-      <keep-alive :include="state.cachedViews">
-        <router-view :key="state.key" />
-      </keep-alive>
-    </transition>-->
       <router-view :key="state.key" v-slot="{ Component }">
         <keep-alive :include="state.cachedViews">
           <component :is="Component" />
@@ -25,6 +20,7 @@ export default defineComponent({
 
     const state = reactive({
       cachedViews: computed(() => {
+        // 需要缓存的页面
         return store.state.tagsView.cachedViews
       }),
       key: computed(() => {

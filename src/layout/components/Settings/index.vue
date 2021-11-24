@@ -23,6 +23,7 @@ export default defineComponent({
     const store = useStore()
 
     const state = reactive({
+      // 菜单主题色
       theme: computed(() => {
         const theme = store.state.settings.theme
         window.document.documentElement.setAttribute('data-theme', theme);
@@ -30,6 +31,7 @@ export default defineComponent({
       })
     })
 
+    // 菜单主题色切换
     const changeTheme = (checked: boolean) => {
       const theme = checked ? 'dark' : 'light';
       window.document.documentElement.setAttribute('theme', theme);

@@ -1,7 +1,8 @@
 <template >
+  <!-- 菜单递归 -->
   <template v-if="!data.item.meta || !data.item.meta.hidden">
     <template v-if="!alwaysShowRootMenu() && theOnlyOneChild() && !theOnlyOneChild().children">
-      <a-menu-item :key="resolvePath(theOnlyOneChild().path)" :class="{'submenu-title-noDropdown': data.isFirstLevel}"  @click="goToPath(resolvePath(theOnlyOneChild().path))">
+      <a-menu-item :key="resolvePath(theOnlyOneChild().path)" @click="goToPath(resolvePath(theOnlyOneChild().path))">
         <template v-if="theOnlyOneChild().meta.icon" #icon>
           <icon class="svg-icon" :icon="theOnlyOneChild().meta.icon"></icon>
         </template>
@@ -47,10 +48,6 @@ export default defineComponent({
       type: Object,
       required: true
     },
-    isNest: {
-      type: Boolean,
-      default: false
-    },
     basePath: {
       type: String,
       default: ''
@@ -58,20 +55,14 @@ export default defineComponent({
     isCollapse: {
       type: Boolean,
       default: false
-    },
-    isFirstLevel: {
-      type: Boolean,
-      default: false
     }
   },
   setup(props) {
 
     let data = reactive({
-      item: props.item,
-      isNest: props.isNest,
+      item: props.item, // 数据列表
       basePath: props.basePath,
-      isCollapse: props.isCollapse,
-      isFirstLevel: props.isFirstLevel
+      isCollapse: props.isCollapse
     })
 
     // 如果设置为true，将始终显示根菜单
@@ -129,6 +120,7 @@ export default defineComponent({
       return path.resolve(data.basePath.toString(), routePath)
     }
 
+    // 点击路由的页面跳转
     const goToPath = (path:string) => {
       if (isExternal(path)) {
         let el = document.createElement('a')
@@ -152,22 +144,6 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-  .simple-mode {
-    &.first-level {
-      .submenu-title-noDropdown {
-        padding: 0 !important;
-        position: relative;
-
-        .a-tooltip {
-          padding: 0 !important;
-        }
-      }
-    }
-  }
-</style>
-
 <style lang="scss" scoped>
   .svg-icon {
     margin-right: 16px;

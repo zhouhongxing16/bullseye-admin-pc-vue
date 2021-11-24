@@ -66,11 +66,11 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard',
-        meta: { title: '首页1', icon: 'HomeOutlined', affix: true, noCache: true }
+        meta: { title: '首页', icon: 'HomeOutlined', affix: true, noCache: true }
       }
     ]
-  },
-  {
+  }
+  /*{
     path: '/23',
     name: 'Dashboard333',
     component: Layout,
@@ -146,7 +146,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         ]
       }
     ]
-  }
+  }*/
 ]
 
 const router = createRouter({

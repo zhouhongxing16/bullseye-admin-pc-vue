@@ -1,9 +1,11 @@
 <template>
   <div class="navbar">
+    <!-- 菜单伸缩 -->
     <hamburger :is-active="state.opened" class="hamburger-container" @toggleClick="toggleSideBar()" />
-
+    <!-- 面包屑 -->
     <breadcrumb class="breadcrumb-container" />
 
+    <!-- 右上角操作内容 -->
     <div class="right-menu">
       <a-dropdown class="avatar-container" trigger="hover" placement="bottomRight">
         <div class="ant-dropdown-link">
@@ -45,17 +47,22 @@ export default defineComponent({
     const route = useRoute()
 
     let state = reactive({
+      // 菜单栏伸缩状态
       opened: computed(() => {
         return store.getters.sidebar.opened
       }),
+      // 账号头像
       avatar: store.getters.avatar,
+      // 账号名称
       name: store.getters.name
     })
 
+    // 伸缩按钮点击事件
     const toggleSideBar = () => {
       store.dispatch('app/toggleSideBar')
     }
 
+    // 退出登录
     const logout = () => {
       store.dispatch('user/logout')
       router.push(`/login?redirect=${route.fullPath}`)

@@ -1,4 +1,5 @@
 <template>
+  <!-- logo展示模块，与ant的menu同样的伸缩速度和放大缩小动画 -->
   <div class="sidebar-logo-container" :class="{'collapse':data.collapse}">
     <transition :style="data.collapse?'transition:0.3s cubic-bezier(0.645, 0.045, 0.355, 1)':'transition: 0.1s linear'">
       <router-link key="collapse" class="sidebar-logo-link" to="/" :class="data.collapse?'margin-type-one':'margin-type-two'">
@@ -24,7 +25,7 @@ export default defineComponent({
       collapse: computed(() => {
         return props.collapse
       }),
-      title: 'logo下文字',
+      title: '这里是名称',
       logo: '@/assets/logo/logo-min.jpg'
     })
 

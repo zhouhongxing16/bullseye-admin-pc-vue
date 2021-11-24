@@ -1,4 +1,5 @@
 <template>
+  <!-- 菜单栏伸缩 -->
   <div style="padding: 0 15px;" @click="toggleClick">
     <svg
       :class="{'is-active':state.isActive}"
@@ -14,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, computed} from 'vue'
+import { defineComponent, reactive, computed } from 'vue'
 
 export default defineComponent({
   name: 'Hamburger',
@@ -25,12 +26,12 @@ export default defineComponent({
     }
   },
   setup(props, content) {
+    // 伸缩按钮点击
     const toggleClick = () => {
-      // store.dispatch('app/toggleSideBar')
       content.emit('toggleClick')
     }
 
-
+    // 伸缩按钮状态
     const state = reactive({
       isActive: computed(() => {
         return props.isActive
