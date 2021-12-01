@@ -47,12 +47,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     component: () => import('@/views/login/index.vue')
   },
   {
-    path: '/:catchAll(.*)',
-    name: '/Page404',
-    meta: { hidden: true },
-    component: () => import('@/views/404.vue')
-  },
-  {
     path: '/',
     name: 'Dashboard',
     component: Layout,
@@ -147,6 +141,15 @@ export const constantRoutes: Array<RouteRecordRaw> = [
       }
     ]
   }*/
+]
+
+export const constantErrorRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/:catchAll(.*)',
+    name: '/Page404',
+    meta: { hidden: true },
+    component: () => import('@/views/404.vue')
+  }
 ]
 
 const router = createRouter({

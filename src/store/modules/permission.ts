@@ -1,4 +1,4 @@
-import { constantRoutes } from '@/router'
+import { constantRoutes, constantErrorRoutes } from '@/router'
 import { getMenusByAccountId } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 
@@ -10,6 +10,8 @@ const state = {
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
+    // 404放在最后，避免出现刷新页面进入404的问题
+    routes.concat(constantErrorRoutes)
     state.routes = constantRoutes.concat(routes)
   }
 }
